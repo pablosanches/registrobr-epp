@@ -1,0 +1,10 @@
+version: "3.9"
+
+services:
+  registrobr-epp:
+    build: .
+    user: "${UID}:${GID}"
+    container_name: registrobr-epp
+    tty: true
+    volumes:
+      - ./:/app:delegated

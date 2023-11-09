@@ -1,0 +1,42 @@
+{
+  "name": "pablosanches/registrobr-eep",
+  "description": "SDK não oficial de integração com os Correios",
+  "type": "library",
+  "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable" : true,
+  "autoload": {
+    "psr-4": {
+      "PabloSanches\\RegistroBR\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "PabloSanches\\RegistroBR\\": "tests/"
+    }
+  },
+  "authors": [
+    {
+      "name": "Pablo Sanches",
+      "email": "sanches.webmaster@gmail.com"
+    }
+  ],
+  "require-dev": {
+    "fakerphp/faker": "*",
+    "squizlabs/php_codesniffer": "*",
+    "phpunit/phpunit": "*"
+  },
+  "require": {
+    "ext-mbstring": "*",
+    "ext-json": "*"
+  },
+  "scripts": {
+    "test": "phpunit --coverage-html tests/_reports",
+    "cs": "phpcs --standard=PSR12",
+    "csf": "phpcbf --standard=PSR12",
+    "deploy": [
+      "@cs",
+      "@test"
+    ]
+  }
+}
