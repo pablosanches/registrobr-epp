@@ -7,7 +7,7 @@ use PabloSanches\RegistroBR\Exception\RegistroBRException;
 
 final class EPP
 {
-    private const CERTIFICATE = 'client.pem';
+    private const CERTIFICATE = '../assets/client.pem';
     private const HOST = 'beta.registro.br';
     private const PORT = 700;
 
