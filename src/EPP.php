@@ -3,6 +3,7 @@
 namespace PabloSanches\RegistroBR;
 
 use http\Env\Response;
+use PabloSanches\RegistroBR\Exception\RegistroBRException;
 
 final class EPP
 {
@@ -66,27 +67,54 @@ final class EPP
         $this->conn = null;
     }
 
-    public function sendCommand(TemplateInterface $template): int|bool
+    public function sendCommand(?TemplateInterface $template = null): int|bool
     {
         return fwrite($this->conn, $template->xml());
     }
 
-    public function login(): ResponseInterface
+    public function login(): string|false
     {
 
     }
 
-    public function logout(): ResponseInterface
+    public function logout(): string|false
     {
 
     }
 
-    public function hello(): ResponseInterface
+    public function hello(): string|false
     {
 
     }
 
-    private function unwrap(): ResponseInterface
+    private function wrap(?TemplateInterface $template = null): string|false
     {
+        $xml = $template->xml();
+
+        $packedString = pack(
+            'N',
+            (strlen($template->xml()) + 4)
+        );
+
+        return $packedString . $xml;
+    }
+
+    /**
+     * @return string|false
+     * @throws RegistroBRException
+     */
+    private function unwrap(): string|false
+    {
+        if(feof($this->conn)) {
+            throw new RegistroBRException('Ocorreu um erro ao tentar desempacotar o retorno.');
+        }
+
+        $packetHeader = fread($this->conn, 4);
+        if(empty($packetHeader)) {
+            throw new RegistroBRException('Cabeçalho do pacote inválido.');
+        }
+
+        $unpacked = unpack('N', $packetHeader);
+        return fread($this->conn, $unpacked[1] - 4);
     }
 }
