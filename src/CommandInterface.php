@@ -2,8 +2,8 @@
 
 namespace PabloSanches\RegistroBR;
 
-interface TemplateInterface
+interface CommandInterface
 {
     public function xml(): string;
-    public function getTemplateName(): string;
+    public function execute(): ?string;
 }

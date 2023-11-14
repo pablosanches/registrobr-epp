@@ -2,25 +2,29 @@
 
 namespace PabloSanches\RegistroBR;
 
-use http\Env\Response;
+use PabloSanches\RegistroBR\Exception\RegistroBRException;
 use PabloSanches\RegistroBR\Resource\ResourceFactory;
 use PabloSanches\RegistroBR\Resource\ResourceInterface;
 
 final class RegistroBR
 {
-    protected function __construct(
-        private EPP $epp
-    ) {
-
+    protected function __construct(private EppClient $eppClient)
+    {
     }
 
+    /**
+     * @throws RegistroBRException
+     */
     public static function factory(string $user, string $pass): RegistroBR
     {
-        return new RegistroBR(EPP::factory($user, $pass));
+        return new static(EppClient::factory($user, $pass));
     }
 
+    /**
+     * @throws RegistroBRException
+     */
     public function __call(string $resourceName, array $arguments): ResourceInterface
     {
-        return ResourceFactory::factoryByResourceName($resourceName, $arguments);
+        return ResourceFactory::factory($resourceName, $this->eppClient, $arguments);
     }
 }

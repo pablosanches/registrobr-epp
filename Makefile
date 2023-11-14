@@ -1,10 +1,7 @@
 current-dir := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 composer-install:
-	@docker run --rm $(INTERACTIVE) --volume $(current-dir):/app --user $(id -u):$(id -g) \
-		composer:2.6.4 install \
-			--ignore-platform-reqs \
-			--no-ansi
+	docker exec registrobr-epp composer install
 
 test:
 	docker exec registrobr-epp ./vendor/bin/phpunit --testsuite unit

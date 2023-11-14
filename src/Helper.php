@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection CallableParameterUseCaseInTypeContextInspection */
+
 namespace PabloSanches\RegistroBR;
 
 use PabloSanches\RegistroBR\Exception\RegistroBRException;
@@ -9,29 +11,32 @@ abstract class Helper
     /**
      * @throws RegistroBRException
      */
-    public static function buildResourceNamespaceFromResourceName(string $resourceName): string
+    public static function buildNamespace(string $className, string $type): string
     {
-        $resourceName = self::toCamelCase($resourceName);
-        $resourceNamespace = __NAMESPACE__ . "\\Resource\\{$resourceName}";
-
-        if (!class_exists($resourceNamespace)) {
-            throw new RegistroBRException("Resource {$resourceNamespace} não foi existe.");
+        $className = self::toCamelCase($className);
+        $namespace = __NAMESPACE__ . "\\$type\\{$className}";
+        if (!class_exists($namespace)) {
+            throw new RegistroBRException("$type '$namespace' indisponível.");
         }
 
-        return $resourceNamespace;
+        return $namespace;
     }
 
-    public static function toCamelCase(string $string): string
+    public static function toCamelCase(string $resourceName): string
     {
-        $string = strtr($string, [
-            ' ' => '##',
+        $resourceName = strtr($resourceName, [
+            '_' => '##',
             '-' => '##',
-            '_'
+            ' ' => '##'
         ]);
 
-        $stringParts = explode('##', $string);
-        $stringParts = array_map(fn($string) => ucfirst($string), $stringParts);
+        $resourceName = explode('##', $resourceName);
+        $resourceName = array_map(static fn ($string) => mb_convert_case($string, MB_CASE_TITLE), $resourceName);
+        return implode('', $resourceName);
+    }
 
-        return implode('', $stringParts);
+    public static function onlyNumbers(string $string): int
+    {
+        return (int) preg_replace('/[^0-9]/', '', $string);
     }
 }

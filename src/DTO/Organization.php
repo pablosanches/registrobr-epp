@@ -2,20 +2,20 @@
 
 namespace PabloSanches\RegistroBR\DTO;
 
-class Organization
+class Organization extends AbstractDTO
 {
-    public function __construct(
-        public ?string $id = null,
-        public ?string $name = null,
-        public ?string $street_1 = null,
-        public ?string $street_2 = null,
-        public ?string $city = null,
-        public ?string $state = null,
-        public ?string $zipcode = null,
-        public ?string $phone = null,
-        public ?string $email = null,
-        public ?string $country = 'BR',
-        public ?Contact $contact = null
-    ) {
-    }
+    public ?string $id;
+    public ?string $name;
+    public ?string $street_1;
+    public ?string $street_2;
+    public ?string $city;
+    public ?string $state;
+    public ?string $zipcode;
+    public ?string $country = 'BR';
+    public ?string $phone;
+    public ?string $email;
+    public ?string $contact_admin_id;
+    public ?string $contact_tech_id;
+    public ?string $contact_billing_id;
+    public ?string $contact_name;
 }

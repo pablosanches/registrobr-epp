@@ -2,15 +2,12 @@
 
 namespace PabloSanches\RegistroBR\DTO;
 
-class Domain
+class Domain extends AbstractDTO
 {
-    public function __construct(
-        public ?string $name = null,
-        public ?string $dns_1 = null,
-        public ?string $dns_2 = null,
-        public ?Organization $organization = null,
-        public int $auto_renew = 0,
-        public int $period = 1
-    ) {
-    }
+    public ?string $name;
+    public int $period = 1;
+    public ?string $dns_1;
+    public ?string $dns_2;
+    public ?string $org_id;
+    public int $auto_renew = 0;
 }
