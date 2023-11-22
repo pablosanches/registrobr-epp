@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<epp xmlns="urn:ietf:params:xml:ns:epp-1.0">
+    <command>
+        <renew>
+            <domain:renew xmlns:domain="urn:ietf:params:xml:ns:domain-1.0">
+                <domain:name>{{ name }}</domain:name>
+                <domain:curExpDate>{{ current_expiration_date }}</domain:curExpDate>
+                <domain:period unit="y">{{ period }}</domain:period>
+            </domain:renew>
+        </renew>
+        <clTRID>{{ clTRID }}</clTRID>
+    </command>
+</epp>
