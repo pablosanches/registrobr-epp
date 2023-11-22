@@ -86,6 +86,19 @@ $response = $domain->create([
 var_dump($response);
 ```
 
+#### Renovando um domínio
+```php
+$eppClient = EppClient::factory('user', 'password');
+$domain = ResourceFactory::factory($eppClient, 'domain');
+$response = $domain->renew([
+    'name' => 'dominiodeexemplo.com.br',
+    'current_expiration_date' => '2000-04-03',
+    'period' => 1
+]);
+var_dump($response);
+```
+Obs: O parâmetro current_expiration_date é o domain:crDate de retorno do comando de domain_info.
+
 #### Buscando informações de um domínio
 ```php
 $eppClient = EppClient::factory('user', 'password');
