@@ -2,8 +2,6 @@
 
 namespace PabloSanches\RegistroBR;
 
-use PabloSanches\RegistroBR\Exception\RegistroBRException;
-
 class ResponseEpp implements ResponseInterface
 {
     private array $response = [];

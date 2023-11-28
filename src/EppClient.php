@@ -15,6 +15,7 @@ class EppClient
     protected function __construct(
         private string $user,
         private string $password,
+        private ?string $certificatePath = null,
         private string $host = 'beta.registro.br',
         private int $port = 700,
         private string $protocol = 'tls'
@@ -30,9 +31,12 @@ class EppClient
     /**
      * @throws RegistroBRException
      */
-    public static function factory(string $username, string $password): EppClient
-    {
-        return new static($username, $password);
+    public static function factory(
+        string $username,
+        string $password,
+        ?string $certificatePath = null
+    ): EppClient {
+        return new static($username, $password, $certificatePath);
     }
 
     /**
@@ -52,7 +56,7 @@ class EppClient
                     'allow_self_signed' => true,
                     'verify_peer' => false,
                     'verify_peer_name' => false,
-                    'local_cert' => __DIR__ . '/../certificates/client.pem'
+                    'local_cert' => $this->getCertificatePath()
                 ]
             ])
         );
@@ -153,5 +157,10 @@ class EppClient
     private function generateId(): string
     {
         return uniqid('', true);
+    }
+
+    private function getCertificatePath(): string
+    {
+        return !empty($this->certificatePath) ? $this->certificatePath : __DIR__ . '/../certificates/client.pem';
     }
 }

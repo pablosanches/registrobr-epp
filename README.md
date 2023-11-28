@@ -14,12 +14,13 @@ composer require pablosanches/registrobr-epp
 ```
 
 ### Utilização
-
+A lib usa por padrão o certificado fornecido pelo Registro.br para o ambiente de homologação.
+Para fornecer o seu certificado oficial você pode informar o caminho absoluto do arquivo no factory do EppClient;
 #### Criando contato
 ```php
-$eppClient = EppClient::factory('user', 'password');
+$eppClient = EppClient::factory('user', 'password', '<caminho-absoluto-do-certificado.pem>');
 $contact = ResourceFactory::factory($eppClient, 'contact');
-$response = $contact->create([
+$return = $contact->create([
     'name' => 'João da Silva',
     'street_1' => 'Rua das Laranjeiras',
     'street_2' => '100',
@@ -29,22 +30,40 @@ $response = $contact->create([
     'phone' => '+55.1122222222',
     'email' => 'teste@teste.com'
 ]);
-var_dump($response);
+var_dump($return->getResponse());
+```
+
+
+#### Criando contato
+```php
+$eppClient = EppClient::factory('user', 'password');
+$contact = ResourceFactory::factory($eppClient, 'contact');
+$return = $contact->create([
+    'name' => 'João da Silva',
+    'street_1' => 'Rua das Laranjeiras',
+    'street_2' => '100',
+    'city' => 'São Paulo',
+    'state' => 'SP',
+    'zipcode' => '02127-000',
+    'phone' => '+55.1122222222',
+    'email' => 'teste@teste.com'
+]);
+var_dump($return->getResponse());
 ```
 
 #### Buscando informações de um contato
 ```php
 $eppClient = EppClient::factory('user', 'password');
 $contact = ResourceFactory::factory($eppClient, 'contact', ['id' => 'contact-id']);
-$response = $contact->info();
-var_dump($response);
+$return = $contact->info();
+var_dump($return->getResponse());
 ```
 
 #### Criando uma organização
 ```php
 $eppClient = EppClient::factory('user', 'password');
 $organization = ResourceFactory::factory($eppClient, 'organization');
-$response = $organization->create([
+$return = $organization->create([
     'id' => '246.838.523-30',
     'name' => 'José da Silva',
     'street_1' => 'Rua das Figueiras',
@@ -60,22 +79,22 @@ $response = $organization->create([
     'contact_billing_id' => 'JOSIL44',
     'contact_name' => 'José da Silva'
 ]);
-var_dump($response);
+var_dump($return->getResponse());
 ```
 
 #### Buscando informações de uma organização
 ```php
 $eppClient = EppClient::factory('user', 'password');
 $organization = ResourceFactory::factory($eppClient, 'organization', ['id' => 'JOSIL44']);
-$response = $organization->info();
-var_dump($response);
+$return = $organization->info();
+var_dump($return->getResponse());
 ```
 
 #### Registrando um domínio
 ```php
 $eppClient = EppClient::factory('user', 'password');
 $domain = ResourceFactory::factory($eppClient, 'domain');
-$response = $domain->create([
+$return = $domain->create([
     'name' => 'dominiodeexemplo.com.br',
     'period' => 1,
     'dns_1' => 'ns1.yoursite-idc.net',
@@ -83,19 +102,19 @@ $response = $domain->create([
     'org_id' => '246.838.523-30',
     'auto_renew' => 0
 ]);
-var_dump($response);
+var_dump($return->getResponse());
 ```
 
 #### Renovando um domínio
 ```php
 $eppClient = EppClient::factory('user', 'password');
 $domain = ResourceFactory::factory($eppClient, 'domain');
-$response = $domain->renew([
+$return = $domain->renew([
     'name' => 'dominiodeexemplo.com.br',
     'current_expiration_date' => '2000-04-03',
     'period' => 1
 ]);
-var_dump($response);
+var_dump($return->getResponse());
 ```
 Obs: O parâmetro current_expiration_date é o domain:crDate de retorno do comando de domain_info.
 
@@ -103,14 +122,30 @@ Obs: O parâmetro current_expiration_date é o domain:crDate de retorno do coman
 ```php
 $eppClient = EppClient::factory('user', 'password');
 $domain = ResourceFactory::factory($eppClient, 'domain');
-$response = $domain->info(['name' => 'yoursite6.com.br']);
-var_dump($response);
+$return = $domain->info(['name' => 'yoursite6.com.br']);
+var_dump($return->getResponse());
 ```
 
 #### Verificando se um domínio está disponível
 ```php
 $eppClient = EppClient::factory('user', 'password');
 $domain = ResourceFactory::factory($eppClient, 'domain');
-$response = $domain->check(['name' => 'yoursite6.com.br']);
-var_dump($response);
+$return = $domain->check(['name' => 'yoursite6.com.br']);
+var_dump($return->getResponse());
+```
+
+#### Recebendo o retorno de uma mensagem na Poll
+```php
+$eppClient = EppClient::factory('user', 'password');
+$poll = ResourceFactory::factory($eppClient, 'poll');
+$return = $poll->request();
+var_dump($return->getResponse());
+```
+
+#### Removendo uma mensagem da Poll
+```php
+$eppClient = EppClient::factory('user', 'password');
+$poll = ResourceFactory::factory($eppClient, 'poll');
+$return = $poll->delete('<message-id>');
+var_dump($return->getResponse());
 ```

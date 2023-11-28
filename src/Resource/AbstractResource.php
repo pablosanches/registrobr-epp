@@ -32,20 +32,31 @@ abstract class AbstractResource implements ResourceInterface
         return mb_strtolower(end($class));
     }
 
-    protected function getTemplateNameByMethod(string $method): string
+    protected function getTemplateNameByMethod(string $method = ''): string
     {
-        return $this->getClassName() . "_{$method}";
+        if (!empty($method)) {
+            $method = "_{$method}";
+        }
+
+        return $this->getClassName() . $method;
     }
 
     /**
      * @throws RegistroBRException
      */
-    public function __call(string $method, array $arguments = [])
+    public function __call(string $method, array $arguments = []): ResponseEpp
     {
         if (!empty($arguments)) {
             $this->dto->hydrate(...$arguments);
         }
+        return $this->executeCommand($method);
+    }
 
+    /**
+     * @throws RegistroBRException
+     */
+    public function executeCommand(string $method = ''): ResponseEpp
+    {
         $template = new Template(
             $this->getTemplateNameByMethod($method),
             $this->dto->export()
