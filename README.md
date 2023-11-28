@@ -105,6 +105,29 @@ $return = $domain->create([
 var_dump($return->getResponse());
 ```
 
+#### Atualizando um domínio
+```php
+$eppClient = EppClient::factory('user', 'password');
+$domain = ResourceFactory::factory($eppClient, 'domain');
+$return = $domain->update([
+    'name' => 'dominiodeexemplo.com.br',
+    'period' => 1,
+    'dns_1' => 'ns1.yoursite-idc.net',
+    'dns_2' => 'ns2.yoursite-idc.net',
+    'org_id' => '246.838.523-30',
+    'auto_renew' => 0
+]);
+var_dump($return->getResponse());
+```
+
+#### Removendo um domínio
+```php
+$eppClient = EppClient::factory('user', 'password');
+$domain = ResourceFactory::factory($eppClient, 'domain');
+$return = $domain->delete(['name' => 'dominiodeexemplo.com.br']);
+var_dump($return->getResponse());
+```
+
 #### Renovando um domínio
 ```php
 $eppClient = EppClient::factory('user', 'password');
