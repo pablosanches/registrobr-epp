@@ -9,5 +9,6 @@ class Domain extends AbstractDTO
     public ?string $dns_1;
     public ?string $dns_2;
     public ?string $org_id;
+    public ?string $ticket_number;
     public int $auto_renew = 0;
 }

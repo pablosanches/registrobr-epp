@@ -145,7 +145,7 @@ Obs: O parâmetro current_expiration_date é o domain:crDate de retorno do coman
 ```php
 $eppClient = EppClient::factory('user', 'password');
 $domain = ResourceFactory::factory($eppClient, 'domain');
-$return = $domain->info(['name' => 'yoursite6.com.br']);
+$return = $domain->info(['name' => 'yoursite6.com.br', 'ticket_number' => '']);
 var_dump($return->getResponse());
 ```
 
